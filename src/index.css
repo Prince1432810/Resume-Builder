@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  color: #213547;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+}
+
+.icons{
+    @apply  w-5
+            transition-all duration-100
+            select-none
+            
+}
+
+.iconList{
+  @apply  mt-1 cursor-pointer
+           transition duration-100
+          flex
+          p-2
+          rounded-md
+          w-auto
+          
+}
+
+.iconMsg{
+  @apply  ml-5
+  select-none
+  font-sans text-sm font-medium
+  hidden group-hover:inline-block
+  text-nowrap overflow-hidden
+}
+
+.selected{
+  color: white;
+}
+
+.items{
+  @apply
+    text-start
+    p-3
+}
+
+.names{
+  @apply
+    text-sm
+}
+
+.do-hover{
+  @apply
+  hover:bg-[#f2fbff]
+  active:scale-99
+}
+
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scrollLeft 20s linear infinite;
+}
+
+.inputField{
+  @apply
+  rounded-md
+  outline-0
+  py-2 px-4
+  bg-gray-100
+  text-sm
+  text-gray-900
+  border border-[#e6eff5]
+
+}
+
+.labelField{
+  @apply
+  text-xs font-semibold
+  text-gray-500
+}
+
+.inputContainer{
+  @apply
+  flex flex-col
+}
+
+.btn{
+  @apply
+  bg-[#3985b6]
+  p-2 pl-4 pr-4
+  font-bold
+  text-sm
+  h-10 w-auto
+  rounded-md
+  text-white
+  outline-none
+  active:bg-[#4898ce]
+  cursor-pointer
+}
+          
+/* Hide scrollbar but allow scrolling */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE & Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+
+
+.black-gray-btn{
+  @apply
+  bg-gray-300 text-gray-700 p-2 rounded-sm mr-2 text-sm pl-3 pr-3 cursor-pointer
+}
+
+.white-gray-btn{
+  @apply
+  bg-gray-300 text-white p-2 rounded-sm mr-2 text-sm pl-3 pr-3 cursor-pointer
+}
+
+.safe-button{
+  @apply
+  bg-[#3985b6] text-white p-2 rounded-sm mr-2 text-sm pl-3 pr-3 cursor-pointer
+}
+
+.no-grow{
+  max-width: 100%;
+}
+
+.location{
+  @apply
+  w-full
+}
+
+.no-scrollbar {
+  overflow: scroll;
+  scrollbar-width: none;      /* Firefox */
+  -ms-overflow-style: none;   /* IE/Edge */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;              /* Chrome, Safari */
+}
+
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: scale(.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+
+  }
+}
+
+
+
+/* Selected day circle */
+.react-datepicker__day--selected {
+  background-color: #2563eb !important; /* your brand blue */
+  color: white !important;
+  border-radius: 50% !important;
+  font-weight: bold;
+}
+
+/* Hover state */
+.react-datepicker__day:hover {
+  background-color: #bfdbfe !important;
+  border-radius: 50% !important;
+}
+
+/* Today highlight */
+
+/* Calendar popup styling */
+.react-datepicker {
+  border: 1px solid #CBDAE3 !important;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15) !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+
+/* Remove default header background */
+.react-datepicker__header {
+  background: transparent !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+}
+
+/* Hide days outside current month */
+.react-datepicker__day--outside-month {
+  visibility: hidden;
+}
+
+/* Force 4 columns in year picker */
+.react-datepicker__year-wrapper {
+  display: grid !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  
+  max-width: none !important;
+
+  @apply
+  place-items-center
+  max-w-none
+  gap-4
+  p-2
+  text-base
+  max-h-50 overflow-y-scroll overflow-x-hidden
+}
+
+.react-datepicker__year-text {
+  width: 100% !important;
+  text-align: center !important;
+  /* border: 2px solid black; */
+}
+
+/* Hide disabled/future years entirely */
+.react-datepicker__year-text--disabled {
+  display: none !important;
+}
+
+.react-datepicker__year--container{
+  @apply
+  pb-2
+}
+
+/* Controls gap between month buttons in the grid */
+.react-datepicker__month-wrapper {
+  @apply
+  flex gap-1 justify-center mb-3
+}
+
+.react-datepicker__month-text {
+  @apply
+  px-3 py-1 text-sm
+  max-w-fit
+}
