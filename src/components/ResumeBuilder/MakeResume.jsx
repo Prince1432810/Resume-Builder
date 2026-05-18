@@ -879,7 +879,7 @@ const MakeResume = () => {
                     <TemplateThree {...resumeProps} />
                 </div>
 
-                <div className=" w-[60%] h-[calc(100vh-11rem)] rounded-lg overflow-hidden">
+                <div className="hidden w-[60%] h-[calc(100vh-11rem)] rounded-lg overflow-hidden">
                     <PDFViewer
                         width="100%"
                         height="100%"

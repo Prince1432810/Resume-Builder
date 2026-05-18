@@ -595,7 +595,7 @@ const SkillBar = ({ level }) => {
 
 // ─── Section Heading (Left) ───────────────────────────────────────
 const SectionHeading = ({ children }) => (
-    <View style={styles.sectionHeadingWrapper} minPresenceAhead={60}>
+    <View style={styles.sectionHeadingWrapper} minPresenceAhead={30}>
         <Text style={styles.sectionHeadingText}>{children}</Text>
         <View style={styles.sectionDivider} />
     </View>
@@ -790,12 +790,13 @@ const PDFthree = ({
 
                         {/* EXPERIENCE */}
                         {expData.length > 0 && (
-                            <View style={styles.expSection}>
+                            <View style={styles.expSection} minPresenceAhead={80}>
                                 <SectionHeading>Experience</SectionHeading>
                                 <View style={{ marginTop: 10 }}>
                                     {expData.map((exp, idx) => (
                                         <View
                                             key={exp.id}
+                                            wrap={false}
                                             style={[
                                                 styles.expItem,
                                                 idx < expData.length - 1 && {
@@ -924,7 +925,7 @@ const PDFthree = ({
 
                         {/* LINKS */}
                         {socialData.length > 0 && (
-                            <View style={styles.linksSection}>
+                            <View wrap={false} style={styles.linksSection}>
                                 <RightSbHeading>Links</RightSbHeading>
                                 <View
                                     style={{
