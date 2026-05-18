@@ -1,11 +1,7 @@
-import React from 'react'
+import React from "react";
 
 const MakeResumeData = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+    return <div></div>;
+};
 
-export default MakeResumeData
+export default MakeResumeData;
