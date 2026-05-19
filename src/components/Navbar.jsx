@@ -2,6 +2,7 @@ import notification from "../assets/NavbarAssest/notification.svg";
 import account from "../assets/NavbarAssest/account.svg";
 import logo from "../assets/logo.png";
 import { useLocation } from "react-router-dom";
+import { UserButton} from "@clerk/clerk-react";
 
 const Navbar = () => {
     const location = useLocation();
@@ -16,7 +17,7 @@ const Navbar = () => {
                     My Profile
                 </h4>
                 <img src={notification} alt="notification" />
-                <img src={account} alt="notification" />
+                <UserButton />
             </div>
         </div>
     );
