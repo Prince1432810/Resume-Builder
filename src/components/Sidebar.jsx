@@ -67,25 +67,46 @@ const Sidebar = () => {
                             <span className="iconMsg">DashBoard</span>
                         </div>
                     </Link>
-
-                    <Link to="/market-place">
+                    {/* <Link to="/jobs">Browse Jobs</Link> */}
+                    <Link to="/jobs">
                         <div
                             className={
-                                path === "/market-place"
+                                path === "/jobs"
                                     ? "iconList text-white bg-[#3985b6]"
                                     : "iconList do-hover"
                             }
                         >
                             <img
                                 src={
-                                    path === "/market-place"
+                                    path === "/jobs"
                                         ? marketplaceWhite
                                         : marketplace
                                 }
                                 alt="dash"
                                 className="icons "
                             />
-                            <span className="iconMsg">Marketplace</span>
+                            <span className="iconMsg">Browse Jobs</span>
+                        </div>
+                    </Link>
+
+                    <Link to="/applications">
+                        <div
+                            className={
+                                path === "/applications"
+                                    ? "iconList text-white bg-[#3985b6] "
+                                    : "iconList do-hover"
+                            }
+                        >
+                            <img
+                                src={
+                                    path === "/applications"
+                                        ? expensesWhite
+                                        : expenses
+                                }
+                                alt="dash"
+                                className="icons "
+                            />
+                            <span className="iconMsg">My Applications</span>
                         </div>
                     </Link>
 
@@ -130,27 +151,6 @@ const Sidebar = () => {
                                 className="icons "
                             />
                             <span className="iconMsg">Resume Builder</span>
-                        </div>
-                    </Link>
-
-                    <Link to="/expenses">
-                        <div
-                            className={
-                                path === "/expenses"
-                                    ? "iconList text-white bg-[#3985b6] "
-                                    : "iconList do-hover"
-                            }
-                        >
-                            <img
-                                src={
-                                    path === "/expenses"
-                                        ? expensesWhite
-                                        : expenses
-                                }
-                                alt="dash"
-                                className="icons "
-                            />
-                            <span className="iconMsg">Expenses</span>
                         </div>
                     </Link>
 

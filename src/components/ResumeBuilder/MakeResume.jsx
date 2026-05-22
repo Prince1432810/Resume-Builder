@@ -7,10 +7,12 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import TemplateOne from "./ResumeOutputPage/Templates/TemplateOne";
 import TemplateTwo from "./ResumeOutputPage/Templates/TemplateTwo";
 import TemplateThree from "./ResumeOutputPage/Templates/TemplateThree";
+import TemplateFour from "./ResumeOutputPage/Templates/TemplateFour";
 
 import PDFone from "./ResumeOutputPage/PDFTemplates/PDFone";
 import PDFtwo from "./ResumeOutputPage/PDFTemplates/PDFtwo";
 import PDFthree from "./ResumeOutputPage/PDFTemplates/PDFthree";
+import PDFfour from "./ResumeOutputPage/PDFTemplates/PDFfour";
 
 // SECTION
 import { MakeResumeContext } from "./MakeResumeContext";
@@ -40,6 +42,8 @@ import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
 import MapsHomeWorkOutlinedIcon from "@mui/icons-material/MapsHomeWorkOutlined";
 import LinkedInIcon from "@mui/icons-material/LinkedIn";
 
+import MyResumes from "../MyResumes";
+
 const MakeResume = () => {
     useEffect(() => {
         const handleBeforeUnload = (e) => {
@@ -66,6 +70,9 @@ const MakeResume = () => {
             window.removeEventListener("popstate", handlePopState);
         };
     }, []);
+
+    const [activeTemplate, setActiveTemplate] = useState("template3");
+    const [photo, setPhoto] = useState(null);
 
     const [first, setFirst] = useState("");
     const [last, setLast] = useState("");
@@ -153,6 +160,7 @@ const MakeResume = () => {
         last,
         email,
         phone,
+        photo,
         country,
         city,
         state,
@@ -174,6 +182,20 @@ const MakeResume = () => {
         fontSize: "1.2rem",
     };
 
+    const pdfComponents = {
+        template1: <PDFone {...resumeProps} />,
+        template2: <PDFtwo {...resumeProps} />,
+        template3: <PDFthree {...resumeProps} />,
+        template4: <PDFfour {...resumeProps} />,
+    };
+
+    const previewComponents = {
+        template1: <TemplateOne {...resumeProps} />,
+        template2: <TemplateTwo {...resumeProps} />,
+        template3: <TemplateThree {...resumeProps} />,
+        template4: <TemplateFour {...resumeProps} />,
+    };
+
     return (
         <div className="w-full h-full">
             {/* Top bar */}
@@ -184,23 +206,47 @@ const MakeResume = () => {
                     <span>Create Resume</span>
                 </div>
 
-                {/* ── Download button via PDFDownloadLink ── */}
-                <PDFDownloadLink
-                    document={<PDFthree {...resumeProps} />}
-                    fileName={`${first || "resume"}_${last || ""}.pdf`.trim()}
-                >
-                    <button
-                        className={`p-2 font-bold text-sm px-4 h-10 rounded-md text-white outline-none bg-linear-to-br from-[#3985b6] via-[#275b7d] to-[#3985b6] hover:via-[#33739e] active:scale-99  transition-all duration-300 ease'}`}
+                <div className="flex gap-10">
+                    <div className="flex items-center gap-2 border border-[#CBDAE3] rounded-lg px-3 py-1.5 bg-white shadow-sm hover:border-[#3985b6] transition-all duration-200">
+                        <select
+                            value={activeTemplate}
+                            onChange={(e) => setActiveTemplate(e.target.value)}
+                            className="text-sm font-semibold text-gray-700 bg-transparent outline-none cursor-pointer pr-1 appearance-none"
+                        >
+                            <option value="template1">Template 1</option>
+                            <option value="template2">Template 2</option>
+                            <option value="template3">Template 3</option>
+                            <option value="template4">Template 4</option>
+                        </select>
+                        <svg
+                            className="w-3.5 h-3.5 text-gray-400 pointer-events-none"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2.5"
+                            viewBox="0 0 24 24"
+                        >
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </div>
+
+                    {/* ── Download button via PDFDownloadLink ── */}
+                    <PDFDownloadLink
+                        document={pdfComponents[activeTemplate]}
+                        fileName={`${first || "resume"}_${last || ""}.pdf`.trim()}
                     >
-                        Download Resume
-                    </button>
-                </PDFDownloadLink>
+                        <button
+                            className={`p-2 font-bold text-sm px-4 h-10 rounded-md text-white outline-none bg-linear-to-br from-[#3985b6] via-[#275b7d] to-[#3985b6] hover:via-[#33739e] active:scale-99  transition-all duration-300 ease'}`}
+                        >
+                            Download Resume
+                        </button>
+                    </PDFDownloadLink>
+                </div>
+
             </div>
 
             <div className="mt-5 flex flex-col lg:flex-row gap-6 h-full lg:h-[calc(100vh-9.5rem)] justify-between">
                 {/* Input panel */}
                 <div className=" w-full lg:w-[40%] h-full overflow-scroll no-scrollbar pb-5">
-                    {/* Personal Details */}
 
                     {/* PERSONAL DETAIL'S  */}
                     <div
@@ -239,6 +285,81 @@ const MakeResume = () => {
                             <div style={{ overflow: "hidden" }}>
                                 <div className="overflow-hidden">
                                     <div className="grid grid-cols-1 sm:grid-cols-2 p-6 gap-x-5 gap-y-6">
+                                        
+                                        {/* Photo Upload — add after the LinkedIn inputContainer div */}
+                                        <div className="inputContainer sm:col-span-2">
+                                            <div className="flex mb-2 items-center gap-2">
+                                                <PersonOutlinedIcon style={inputIconStyle} className="text-gray-500" />
+                                                <label className="labelField" htmlFor="photo">
+                                                    Profile Photo
+                                                </label>
+                                            </div>
+
+                                            {!photo ? (
+                                                <label
+                                                    htmlFor="photo"
+                                                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-[#CBDAE3] rounded-xl cursor-pointer bg-[#f7fbfe] hover:bg-[#edf5fb] hover:border-[#3985b6] transition-all duration-200 group"
+                                                >
+                                                    <div className="flex flex-col items-center justify-center gap-1 text-gray-400 group-hover:text-[#3985b6] transition-colors duration-200">
+                                                        <PersonOutlinedIcon style={{ fontSize: "2rem" }} />
+                                                        <span className="text-sm font-medium">Click to upload photo</span>
+                                                        <span className="text-xs text-gray-300">PNG, JPG up to 5MB</span>
+                                                    </div>
+                                                    <input
+                                                        type="file"
+                                                        id="photo"
+                                                        accept="image/*"
+                                                        className="hidden"
+                                                        onChange={(e) => {
+                                                            const file = e.target.files[0];
+                                                            if (!file) return;
+                                                            const reader = new FileReader();
+                                                            reader.onload = (ev) => setPhoto(ev.target.result);
+                                                            reader.readAsDataURL(file);
+                                                        }}
+                                                    />
+                                                </label>
+                                            ) : (
+                                                <div className="flex items-center gap-4 p-3 border border-[#CBDAE3] rounded-xl bg-[#f7fbfe]">
+                                                    <img
+                                                        src={photo}
+                                                        alt="Preview"
+                                                        className="w-14 h-14 rounded-full object-cover border-2 border-[#3985b6] shadow-sm"
+                                                    />
+                                                    <div className="flex flex-col gap-1 flex-1 min-w-0">
+                                                        <span className="text-sm font-semibold text-gray-700">Photo uploaded</span>
+                                                        <span className="text-xs text-gray-400 truncate">Looking good!</span>
+                                                    </div>
+                                                    <div className="flex flex-col gap-2">
+                                                        <label
+                                                            htmlFor="photo-replace"
+                                                            className="text-xs text-[#3985b6] hover:underline cursor-pointer font-medium"
+                                                        >
+                                                            Replace
+                                                            <input
+                                                                type="file"
+                                                                id="photo-replace"
+                                                                accept="image/*"
+                                                                className="hidden"
+                                                                onChange={(e) => {
+                                                                    const file = e.target.files[0];
+                                                                    if (!file) return;
+                                                                    const reader = new FileReader();
+                                                                    reader.onload = (ev) => setPhoto(ev.target.result);
+                                                                    reader.readAsDataURL(file);
+                                                                }}
+                                                            />
+                                                        </label>
+                                                        <button
+                                                            onClick={() => setPhoto(null)}
+                                                            className="text-xs text-red-400 hover:underline font-medium text-left"
+                                                        >
+                                                            Remove
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
                                         <div className="inputContainer">
                                             <div className="flex mb-1 items-center gap-2">
                                                 <PersonOutlinedIcon
@@ -451,6 +572,7 @@ const MakeResume = () => {
                                                 className="inputField"
                                             />
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -872,14 +994,16 @@ const MakeResume = () => {
                             </div>
                         </div>
                     </div>
+                    {/* My Resumes Section */}
+                    {/* <MyResumes activeTemplate={activeTemplate} resumeProps={resumeProps} /> */}
                 </div>
 
                 {/* ── PDF Preview panel ── */}
                 <div className="flex flex-col justify-center items-center w-full lg:w-[60%] h-full lg:h-[calc(100vh-9.5rem)] overflow-hidden">
-                    <TemplateThree {...resumeProps} />
+                    {previewComponents[activeTemplate]}
                 </div>
 
-                <div className="hidden w-[60%] h-[calc(100vh-11rem)] rounded-lg overflow-hidden">
+                <div className=" hidden w-[60%] h-[calc(100vh-11rem)] rounded-lg overflow-hidden">
                     <PDFViewer
                         width="100%"
                         height="100%"
@@ -887,7 +1011,7 @@ const MakeResume = () => {
                         border="none"
                         style={{ border: "none", borderRadius: "0.5rem" }}
                     >
-                        <PDFthree {...resumeProps} />
+                        <PDFfour {...resumeProps} />
                     </PDFViewer>
                 </div>
             </div>

@@ -1,6 +1,5 @@
 import { Text, View } from "@react-pdf/renderer";
 
-// Inline styles instead of importing from ResumePDF to avoid circular dependency
 const tipTapStyles = {
     paragraph: {
         flexDirection: "row",
@@ -9,15 +8,20 @@ const tipTapStyles = {
     },
     bulletRow: {
         flexDirection: "row",
-        marginBottom: 1,
+        marginBottom: 2,
+        alignItems: "flex-start",
     },
     bulletDot: {
         marginRight: 4,
-        fontSize: 10,
+        fontSize: 8.7,
+        color: "#444444",
+        lineHeight: 1.65,
     },
     orderedNum: {
         marginRight: 4,
-        fontSize: 10,
+        fontSize: 8.7,
+        color: "#444444",
+        lineHeight: 1.65,
     },
     listContent: {
         flex: 1,
@@ -26,42 +30,65 @@ const tipTapStyles = {
     },
 };
 
+// Renders a text leaf node with its marks (bold, italic, underline)
+const parseTextNode = (node, index) => {
+    if (!node || node.type !== "text") return null;
+
+    const style = { fontSize: 8.7, color: "#444444", lineHeight: 1.65 };
+    const marks = node.marks || [];
+
+    const isBold = marks.some((m) => m.type === "bold");
+    const isItalic = marks.some((m) => m.type === "italic");
+    const isUnderline = marks.some((m) => m.type === "underline");
+
+    if (isBold && isItalic) style.fontFamily = "Helvetica-BoldOblique";
+    else if (isBold) style.fontFamily = "Helvetica-Bold";
+    else if (isItalic) style.fontFamily = "Helvetica-Oblique";
+
+    if (isUnderline) style.textDecoration = "underline";
+
+    return (
+        <Text key={index} style={style}>
+            {node.text}
+        </Text>
+    );
+};
+
+// Renders inline children of a paragraph — returns an array of Text nodes
+const parseInlineContent = (nodes = []) =>
+    nodes.map((node, i) => parseTextNode(node, i)).filter(Boolean);
+
+// Renders the inline text content of a listItem (flattens paragraph wrappers)
+const parseListItemContent = (listItemNode) => {
+    if (!listItemNode?.content) return null;
+    // A listItem contains paragraph nodes — flatten them into inline Text
+    return listItemNode.content.map((child, i) => {
+        if (child.type === "paragraph") {
+            return parseInlineContent(child.content || []);
+        }
+        return parseTextNode(child, i);
+    });
+};
+
 const parseNode = (node, index) => {
     if (!node) return null;
 
     // ── Plain text leaf ──
     if (node.type === "text") {
-        const style = {};
-        if (node.marks) {
-            node.marks.forEach((mark) => {
-                if (mark.type === "bold") style.fontFamily = "Times-Bold";
-                if (mark.type === "italic") style.fontFamily = "Times-Italic";
-                if (mark.type === "underline")
-                    style.textDecoration = "underline";
-                // bold + italic combo
-                if (
-                    mark.type === "bold" &&
-                    node.marks.find((m) => m.type === "italic")
-                ) {
-                    style.fontFamily = "Times-BoldItalic";
-                }
-            });
-        }
-        return (
-            <Text key={index} style={{ fontSize: 10, ...style }}>
-                {node.text}
-            </Text>
-        );
+        return parseTextNode(node, index);
     }
 
     // ── Paragraph ──
     if (node.type === "paragraph") {
+        const isEmpty =
+            !node.content ||
+            node.content.every((c) => !c.text || c.text.trim() === "");
         return (
             <View key={index} style={tipTapStyles.paragraph}>
-                {node.content ? (
-                    node.content.map((child, i) => parseNode(child, i))
+                {isEmpty ? (
+                    <Text style={{ fontSize: 8.7 }}> </Text>
                 ) : (
-                    <Text> </Text>
+                    parseInlineContent(node.content || [])
                 )}
             </View>
         );
@@ -70,14 +97,12 @@ const parseNode = (node, index) => {
     // ── Bullet List ──
     if (node.type === "bulletList") {
         return (
-            <View key={index} style={{ marginLeft: 8 }}>
+            <View key={index} style={{ marginLeft: 8, marginBottom: 2 }}>
                 {node.content?.map((item, i) => (
                     <View key={i} style={tipTapStyles.bulletRow}>
                         <Text style={tipTapStyles.bulletDot}>•</Text>
                         <View style={tipTapStyles.listContent}>
-                            {item.content?.map((child, j) =>
-                                parseNode(item, j),
-                            )}
+                            {parseListItemContent(item)}
                         </View>
                     </View>
                 ))}
@@ -88,14 +113,12 @@ const parseNode = (node, index) => {
     // ── Ordered List ──
     if (node.type === "orderedList") {
         return (
-            <View key={index} style={{ marginLeft: 8 }}>
+            <View key={index} style={{ marginLeft: 8, marginBottom: 2 }}>
                 {node.content?.map((item, i) => (
                     <View key={i} style={tipTapStyles.bulletRow}>
                         <Text style={tipTapStyles.orderedNum}>{i + 1}.</Text>
                         <View style={tipTapStyles.listContent}>
-                            {item.content?.map((child, j) =>
-                                parseNode(child, j),
-                            )}
+                            {parseListItemContent(item)}
                         </View>
                     </View>
                 ))}
@@ -103,13 +126,10 @@ const parseNode = (node, index) => {
         );
     }
 
-    // ── List Item (nested paragraphs inside li) ──
+    // ── List Item (standalone, shouldn't normally hit this) ──
     if (node.type === "listItem") {
         return (
-            <View
-                key={index}
-                style={{ flexDirection: "row", flexWrap: "wrap" }}
-            >
+            <View key={index} style={{ flexDirection: "row", flexWrap: "wrap" }}>
                 {node.content?.map((child, i) => parseNode(child, i))}
             </View>
         );
@@ -122,17 +142,10 @@ const parseNode = (node, index) => {
         return (
             <View
                 key={index}
-                style={{
-                    flexDirection: "row",
-                    flexWrap: "wrap",
-                    marginBottom: 2,
-                }}
+                style={{ flexDirection: "row", flexWrap: "wrap", marginBottom: 2 }}
             >
                 {node.content?.map((child, i) => (
-                    <Text
-                        key={i}
-                        style={{ fontFamily: "Times-Bold", fontSize }}
-                    >
+                    <Text key={i} style={{ fontFamily: "Helvetica-Bold", fontSize }}>
                         {child.text}
                     </Text>
                 ))}
@@ -152,16 +165,14 @@ const TipTapParser = ({ content }) => {
     if (!content) return null;
 
     let parsed;
-
     if (typeof content === "object" && content !== null) {
-        // Already a parsed object, use directly
         parsed = content;
     } else {
         try {
             parsed = JSON.parse(content);
         } catch {
             return (
-                <Text style={{ fontSize: 10 }}>
+                <Text style={{ fontSize: 8.7 }}>
                     {String(content).replace(/<[^>]*>/g, "")}
                 </Text>
             );
@@ -169,6 +180,10 @@ const TipTapParser = ({ content }) => {
     }
 
     if (!parsed?.content) return null;
-    return <View>{parsed.content.map((node, i) => parseNode(node, i))}</View>;
+
+    return (
+        <View>{parsed.content.map((node, i) => parseNode(node, i))}</View>
+    );
 };
+
 export default TipTapParser;

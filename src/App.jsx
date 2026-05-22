@@ -10,6 +10,14 @@ import NotFound from "./components/pages/NotFound";
 import MarketPlace from "./components/MarketPlace";
 import DashBoard from "./components/DashBoard";
 import MakeResume from "./components/Resumebuilder/MakeResume";
+import LoginPage from "./pages/LoginPage";
+import JobsPage from "./pages/JobsPage";
+import ApplicationsPage from "./pages/ApplicationsPage";
+import { useEffect } from "react";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "./firebase/config";
+
+// Inside your routes:
 import {
     SignedIn,
     SignedOut,
@@ -21,14 +29,30 @@ import {
 
 function App() {
     const location = useLocation();
+
+    const { user, isLoaded } = useUser();
+
+    useEffect(() => {
+        if (!isLoaded || !user) return;
+
+        const userRef = doc(db, "users", user.id);
+        getDoc(userRef).then((snap) => {
+            if (!snap.exists()) {
+                setDoc(userRef, {
+                    name: user.fullName,
+                    email: user.primaryEmailAddress?.emailAddress,
+                    createdAt: new Date(),
+                });
+            }
+        });
+    }, [isLoaded, user]);
     
     return (
         //h-[calc(100vh-0px)] overflow-hidden
         <>
             <header>
                 <SignedOut>
-                    <SignInButton />
-                    <SignUpButton />
+                    <LoginPage/>
                 </SignedOut>
 
                 <SignedIn>
@@ -49,7 +73,7 @@ function App() {
                                     <Route path="/offer-letter" element={<OfferLetter />} />
                                     <Route
                                         path="/resume-builder"
-                                        element={<Resumebuilder />}
+                                        element={<MakeResume />}
                                     />
                                     <Route
                                         path="/resume-builder/create"
@@ -57,7 +81,9 @@ function App() {
                                     />
                                     <Route path="/documents" element={<Documents />} />
                                     <Route path="/chat" element={<Chat />} />
+                                    <Route path="/jobs" element={<JobsPage />} />
                                     <Route path="*" element={<NotFound />} />
+                                    <Route path="/applications" element={<ApplicationsPage />} />
                                 </Routes>
                             </main>
                         </div>

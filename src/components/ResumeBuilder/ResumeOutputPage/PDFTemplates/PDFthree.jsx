@@ -615,6 +615,7 @@ const PDFthree = ({
     last,
     email,
     phone,
+    photo,
     country,
     city,
     state,
@@ -640,7 +641,7 @@ const PDFthree = ({
                 {/* ═══════════════ TOP HEADER ═══════════════ */}
                 <View style={styles.header}>
                     {/* Photo */}
-                    <Image src="/oggyFace.jpg" style={styles.photo} />
+                    <Image src={photo || "/profile.png"} style={styles.photo} />
 
                     {/* Name + contact */}
                     <View style={styles.headerRight}>

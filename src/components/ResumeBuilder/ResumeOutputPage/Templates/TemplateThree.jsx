@@ -17,6 +17,7 @@ const TemplateThree = (props) => {
         email,
         phone,
         country,
+        photo,
         city,
         state,
         linkedin,
@@ -108,7 +109,7 @@ const TemplateThree = (props) => {
                         className="overflow-hidden rounded-md border border-gray-300 shrink-0"
                     >
                         <img
-                            src="/oggyFace.jpg"
+                            src={photo || "/profile.png"}
                             alt=""
                             className="w-full h-full object-cover"
                         />

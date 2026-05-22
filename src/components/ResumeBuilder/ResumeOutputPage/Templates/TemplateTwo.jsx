@@ -16,6 +16,7 @@ const TemplateTwo = (props) => {
         last,
         email,
         phone,
+        photo,
         country,
         city,
         state,
@@ -57,7 +58,16 @@ const TemplateTwo = (props) => {
     const hasSummary =
         summary && summary.replace(/<[^>]*>/g, "").trim().length > 0;
 
-    const barWidths = ["55%", "72%", "48%", "30%", "60%", "68%"];
+    const getLevelWidth = (level) => {
+        const map = {
+            beginner: "20%",
+            elementary: "40%",
+            intermediate: "60%",
+            advanced: "80%",
+            expert: "100%",
+        };
+        return map[(level || "").toLowerCase()] || "50%";
+    };
 
     const initials =
         `${first || ""}${last || ""}`.length > 0
@@ -83,7 +93,7 @@ const TemplateTwo = (props) => {
                     {/* <div className="w-[110px] h-[110px] rounded-full border-[3px] border-white/60 bg-white/15 flex items-center justify-center mb-7 shrink-0"> */}
                     <div className="w-[110px] h-[110px] rounded-full overflow-hidden border-[3px] border-white/60 shrink-0">
                         <img
-                            src="/oggyFace.jpg"
+                            src={photo || "/profile.png"}
                             alt=""
                             className="w-full h-full object-cover"
                         />
@@ -182,9 +192,7 @@ const TemplateTwo = (props) => {
                                         <div
                                             className="h-full bg-[#00BFFF] rounded-full"
                                             style={{
-                                                width: barWidths[
-                                                    idx % barWidths.length
-                                                ],
+                                                width: getLevelWidth(skill.level),
                                             }}
                                         />
                                     </div>

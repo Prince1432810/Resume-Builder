@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     sbDivider: {
         width: "100%",
         borderBottomWidth: 0.5,
-        borderBottomColor: "rgba(255,255,255,0.35)",
+        borderBottomColor: "rgba(255,255,255)",
         marginBottom: 7,
     },
 
@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
         lineHeight: 1.9,
         width: "100%",
         flexWrap: "wrap",
+        textAlign:"left",
     },
 
     // Certifications
@@ -377,7 +378,16 @@ const RightHeading = ({ children }) => (
 );
 
 // ─── Bar widths mirroring TemplateTwo ─────────────────────────────
-const barWidths = ["55%", "72%", "48%", "30%", "60%", "68%"];
+const getLevelWidth = (level) => {
+    const map = {
+        beginner: "20%",
+        elementary: "40%",
+        intermediate: "60%",
+        advanced: "80%",
+        expert: "100%",
+    };
+    return map[(level || "").toLowerCase()] || "50%";
+};
 
 // ─── hasContent helper ────────────────────────────────────────────
 const hasContent = (jsonStr) => {
@@ -398,6 +408,7 @@ const PDFtwo = ({
     last,
     email,
     phone,
+    photo,
     country,
     city,
     state,
@@ -418,7 +429,7 @@ const PDFtwo = ({
                 {/* ══════════════ LEFT SIDEBAR ══════════════ */}
                 <View style={styles.sidebar}>
                     {/* Avatar */}
-                    <Image src="/oggyFace.jpg" style={styles.avatar} />
+                    <Image src={photo || "/profile.png"} style={styles.avatar} />
 
                     {/* CONTACT */}
                     <SbHeading>Contact</SbHeading>
@@ -515,9 +526,7 @@ const PDFtwo = ({
                                             style={[
                                                 styles.skillBarFill,
                                                 {
-                                                    width: barWidths[
-                                                        idx % barWidths.length
-                                                    ],
+                                                    width: getLevelWidth(skill.level),
                                                 },
                                             ]}
                                         />
@@ -699,18 +708,9 @@ const PDFtwo = ({
                                                     ? ` — ${exp.endDate}`
                                                     : ""}
                                             </Text>
-                                            {exp.jobSummary &&
-                                                hasContent(exp.jobSummary) && (
-                                                    <View
-                                                        style={styles.expBody}
-                                                    >
-                                                        <TipTapParser
-                                                            content={
-                                                                exp.jobSummary
-                                                            }
-                                                        />
-                                                    </View>
-                                                )}
+                                            <View style={styles.expBody}>
+                                                <TipTapParser content={exp.jobSummary} />
+                                            </View>
                                         </View>
                                     </View>
                                 ))}
