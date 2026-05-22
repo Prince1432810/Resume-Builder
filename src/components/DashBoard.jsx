@@ -137,7 +137,7 @@ const JobsCarousel = ({ jobs, onJobClick }) => {
                     {visibleJobs.map((job, i) => (
                         <div
                             key={`${job.id}-${i}`}
-                            className="cursor-pointer flex-shrink-0"
+                            className="cursor-pointer shrink-0"
                             style={{ width: "calc(50% - 8px)" }}
                             onClick={onJobClick}
                         >

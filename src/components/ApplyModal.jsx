@@ -219,7 +219,7 @@ export default function ApplyModal({ job, onClose, onConfirm, onApplied }) {
                                 </div>
                                 {resumeFile ? (
                                     <div className="text-center">
-                                        <p className="text-sm font-medium text-indigo-600 truncate max-w-[240px]">{resumeFile.name}</p>
+                                        <p className="text-sm font-medium text-indigo-600 truncate max-w-60">{resumeFile.name}</p>
                                         <p className="text-xs text-slate-400 mt-0.5">Click to change</p>
                                     </div>
                                 ) : (

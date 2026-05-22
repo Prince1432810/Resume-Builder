@@ -126,7 +126,7 @@ function JobCard({ job, isApplied, onApply }) {
             }`}
         >
             {/* Accent bar — always visible for applied; animates in on hover otherwise */}
-            <div className={`h-1 w-full bg-gradient-to-r ${accentBar}
+            <div className={`h-1 w-full bg-linear-to-r ${accentBar}
                 ${isApplied ? "opacity-100" : "opacity-0 group-hover:opacity-100"} transition-opacity duration-300`}
             />
 

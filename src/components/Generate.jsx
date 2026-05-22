@@ -8,10 +8,10 @@ const Generate = () => {
     return (
         <div className="w-full lg:w-[30%] bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             {/* Top accent band */}
-            <div className="bg-gradient-to-br from-[#eaf4fb] to-[#d6eaf7] px-5 pt-5 pb-4 relative overflow-hidden">
+            <div className="bg-linear-to-br from-[#eaf4fb] to-[#d6eaf7] px-5 pt-5 pb-4 relative overflow-hidden">
                 {/* Decorative circles */}
                 <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full bg-[#3985b6]/[0.07]" />
-                <div className="absolute right-5 top-4 w-10 h-10 rounded-full bg-[#3985b6]/[0.05]" />
+                <div className="absolute right-5 top-4 w-10 h-10 rounded-full bg-[#3985b6]/5" />
 
                 {/* Icon */}
                 <div className="relative z-10 w-10 h-10 rounded-xl bg-[#3985b6] flex items-center justify-center shadow-md shadow-[#3985b6]/30">
@@ -50,7 +50,7 @@ const Generate = () => {
                 </div>
 
                 <Link to="/resume-builder" onClick={() => setTab("resume")}>
-                    <button className="w-full flex items-center justify-center gap-2 bg-[#3985b6] hover:bg-[#2e6fa0] active:bg-[#25608e] text-white text-sm font-semibold px-4 py-[10px] rounded-xl transition-all duration-150 shadow-sm shadow-[#3985b6]/25 hover:shadow-md hover:shadow-[#3985b6]/30 hover:-translate-y-px active:translate-y-0">
+                    <button className="w-full flex items-center justify-center gap-2 bg-[#3985b6] hover:bg-[#2e6fa0] active:bg-[#25608e] text-white text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-150 shadow-sm shadow-[#3985b6]/25 hover:shadow-md hover:shadow-[#3985b6]/30 hover:-translate-y-px active:translate-y-0">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="w-4 h-4"

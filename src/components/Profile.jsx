@@ -72,9 +72,9 @@ const Profile = () => {
   return (
     <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden h-full flex flex-col">
       {/* Top accent band — mirrors the Generate card */}
-      <div className="bg-gradient-to-br from-[#eaf4fb] to-[#d6eaf7] px-5 pt-5 pb-4 relative overflow-hidden">
+      <div className="bg-linear-to-br from-[#eaf4fb] to-[#d6eaf7] px-5 pt-5 pb-4 relative overflow-hidden">
         <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full bg-[#3985b6]/[0.07]" />
-        <div className="absolute right-5 top-4 w-10 h-10 rounded-full bg-[#3985b6]/[0.05]" />
+        <div className="absolute right-5 top-4 w-10 h-10 rounded-full bg-[#3985b6]/5" />
 
         {/* Avatar + identity */}
         <div className="relative z-10 flex items-center gap-3">

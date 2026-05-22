@@ -170,7 +170,7 @@ const TemplateThree = (props) => {
                         </div>
 
                         {/* Meta rows */}
-                        <div className="flex flex-col gap-[6px]">
+                        <div className="flex flex-col gap-1.5">
                             {/* Experience row — if you have it in props, render it */}
                             {props.totalExperience && (
                                 <div className="flex flex-row items-center gap-2">
@@ -270,7 +270,7 @@ const TemplateThree = (props) => {
                                     {eduData.map((edu, idx) => (
                                         <div
                                             key={edu.id}
-                                            className="flex flex-row items-start gap-3 mb-[14px]"
+                                            className="flex flex-row items-start gap-3 mb-3.5"
                                         >
                                             {/* Icon + connector */}
                                             <div className="flex flex-col items-center shrink-0">
@@ -308,7 +308,7 @@ const TemplateThree = (props) => {
                                                 )}
                                             </div>
                                             {/* Text */}
-                                            <div className="flex-1 pt-[2px]">
+                                            <div className="flex-1 pt-0.5">
                                                 <div
                                                     style={{
                                                         fontSize: "14px",
@@ -358,7 +358,7 @@ const TemplateThree = (props) => {
                                             className={`flex flex-row gap-3 ${idx < expData.length - 1 ? "mb-6" : ""}`}
                                         >
                                             {/* Icon + connector */}
-                                            <div className="flex flex-col items-center shrink-0 pt-[2px]">
+                                            <div className="flex flex-col items-center shrink-0 pt-0.5">
                                                 <div
                                                     style={{
                                                         width: "36px",
@@ -452,7 +452,7 @@ const TemplateThree = (props) => {
                     </div>
 
                     {/* RIGHT SIDEBAR */}
-                    <div className="flex flex-col px-5 py-6 self-stretch w-[240px] min-w-[240px] bg-[#0177B5] rounded-xl">
+                    <div className="flex flex-col px-5 py-6 self-stretch w-60 min-w-60 bg-[#0177B5] rounded-xl">
                         {/* PRIMARY SKILLS with bars */}
                         {primarySkillsData.length > 0 && (
                             <div className="mb-5">
@@ -536,11 +536,11 @@ const TemplateThree = (props) => {
                         {skillsData.length > 0 && (
                             <div className="mb-5">
                                 <RightSbHeading>Other Skills</RightSbHeading>
-                                <div className="flex flex-wrap gap-[6px] mt-2">
+                                <div className="flex flex-wrap gap-1.5 mt-2">
                                     {skillsData.map((s) => (
                                         <span
                                             key={s.id}
-                                            className="bg-white/15 text-white text-[10.5px] px-2 py-[3px] rounded-[3px]"
+                                            className="bg-white/15 text-white text-[10.5px] px-2 py-0.75 rounded-[3px]"
                                         >
                                             {s.skillName}
                                         </span>
@@ -553,7 +553,7 @@ const TemplateThree = (props) => {
                         {certificateData.length > 0 && (
                             <div className="mb-5">
                                 <RightSbHeading>Certification</RightSbHeading>
-                                <div className="mt-2 flex flex-col gap-[12px]">
+                                <div className="mt-2 flex flex-col gap-3">
                                     {certificateData.map((cert) => (
                                         <div
                                             key={cert.id}

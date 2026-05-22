@@ -125,7 +125,7 @@ function ApplicationRow({ app, onDelete, isLast }) {
                 {/* Main row */}
                 <div className="p-4 flex items-center gap-3">
                     {/* Company logo placeholder */}
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#cce8f7] to-[#edf7fd] border border-[#daeaf5] flex items-center justify-center shrink-0">
+                    <div className="w-10 h-10 rounded-lg bg-linear-to-br from-[#cce8f7] to-[#edf7fd] border border-[#daeaf5] flex items-center justify-center shrink-0">
                         <Briefcase size={16} className="text-[#3985b6]" />
                     </div>
 
