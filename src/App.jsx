@@ -9,7 +9,7 @@ import OfferLetter from "./components/pages/Offer_Letter";
 import NotFound from "./components/pages/NotFound";
 import MarketPlace from "./components/MarketPlace";
 import DashBoard from "./components/DashBoard";
-import MakeResume from "./components/Resumebuilder/MakeResume";
+import MakeResume from "./components/ResumeBuilder/MakeResume";
 import LoginPage from "./pages/LoginPage";
 import JobsPage from "./pages/JobsPage";
 import ApplicationsPage from "./pages/ApplicationsPage";
