@@ -118,8 +118,8 @@ const Profile = () => {
                   ))}
               </div>
 
-              {/* Decorative image column */}
-              <div className="flex items-center justify-center w-28 shrink-0">
+              {/* Decorative image column — hidden on mobile */}
+              <div className="hidden sm:flex items-center justify-center w-28 shrink-0">
                   <img
                       src="https://d2u6422zz9hxmk.cloudfront.net/Assets/Analyze-bro.png"
                       alt=""

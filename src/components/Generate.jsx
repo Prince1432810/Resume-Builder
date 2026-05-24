@@ -6,7 +6,7 @@ const Generate = () => {
     const { tab, setTab } = useContext(UserContext);
 
     return (
-        <div className="w-full lg:w-[30%] bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="w-full sm:w-72 shrink-0 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             {/* Top accent band */}
             <div className="bg-linear-to-br from-[#eaf4fb] to-[#d6eaf7] px-5 pt-5 pb-4 relative overflow-hidden">
                 {/* Decorative circles */}

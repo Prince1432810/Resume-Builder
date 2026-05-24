@@ -34,10 +34,7 @@ const DashBoard = () => {
             {/* Top Row: Recommended Jobs + Profile */}
             <div className="flex flex-col lg:flex-row w-full grow-0 gap-3">
 
-                {/* ── Recommended Jobs Card with gradient top bar ── */}
                 <div className="bg-white w-full lg:w-[70%] grow-0 min-w-0 rounded-xl overflow-hidden shadow-sm border border-gray-100 self-start">
-
-                    {/* Light pastel header matching profile/generate sections */}
                     <div
                         className="flex justify-between items-center px-5 py-4"
                         style={{
@@ -58,12 +55,11 @@ const DashBoard = () => {
                         </button>
                     </div>
 
-                    {/* Carousel body */}
                     <div className="p-5">
                         {loadingJobs ? (
                             <div className="flex gap-4">
                                 {[1, 2].map((i) => (
-                                    <div key={i} className="w-1/2 h-40 bg-gray-100 rounded-xl animate-pulse" />
+                                    <div key={i} className="w-1/2 sm:w-1/2 w-full h-40 bg-gray-100 rounded-xl animate-pulse" />
                                 ))}
                             </div>
                         ) : (
@@ -77,8 +73,8 @@ const DashBoard = () => {
                 </div>
             </div>
 
-            {/* Bottom Row: Generate Resume + Application Summary */}
-            <div className="flex flex-col sm:flex-row w-full mt-4 gap-3">
+            {/* Bottom Row */}
+            <div className="flex flex-col sm:flex-row w-full mt-4 gap-3 items-stretch">
                 <Generate />
                 <ApplicationSummary />
             </div>
@@ -86,15 +82,28 @@ const DashBoard = () => {
     );
 };
 
-/* ─── Sliding Carousel (unchanged) ─── */
+/* ─── Responsive Sliding Carousel ─── */
 const JobsCarousel = ({ jobs, onJobClick }) => {
     const [current, setCurrent] = useState(0);
     const [sliding, setSliding] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
     const intervalRef = useRef(null);
+    const touchStartX = useRef(null);
     const total = jobs.length;
 
+    // Detect mobile breakpoint
+    useEffect(() => {
+        const check = () => setIsMobile(window.innerWidth < 640);
+        check();
+        window.addEventListener("resize", check);
+        return () => window.removeEventListener("resize", check);
+    }, []);
+
+    // On mobile show 1 card, on desktop show 2
+    const visibleCount = isMobile ? 1 : 2;
+
     const next = () => {
-        if (sliding || total < 2) return;
+        if (sliding || total <= visibleCount) return;
         setSliding(true);
         setTimeout(() => {
             setCurrent((prev) => (prev + 1) % total);
@@ -102,11 +111,35 @@ const JobsCarousel = ({ jobs, onJobClick }) => {
         }, 450);
     };
 
+    const prev = () => {
+        if (sliding || total <= visibleCount) return;
+        setSliding(true);
+        setTimeout(() => {
+            setCurrent((prev) => (prev - 1 + total) % total);
+            setSliding(false);
+        }, 450);
+    };
+
+    // Auto-play
     useEffect(() => {
-        if (total < 2) return;
+        if (total <= visibleCount) return;
         intervalRef.current = setInterval(next, 3000);
         return () => clearInterval(intervalRef.current);
-    }, [total, sliding]);
+    }, [total, sliding, visibleCount]);
+
+    // Touch swipe support
+    const handleTouchStart = (e) => {
+        touchStartX.current = e.touches[0].clientX;
+    };
+
+    const handleTouchEnd = (e) => {
+        if (touchStartX.current === null) return;
+        const diff = touchStartX.current - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 40) {
+            diff > 0 ? next() : prev();
+        }
+        touchStartX.current = null;
+    };
 
     if (total === 0) {
         return (
@@ -116,18 +149,28 @@ const JobsCarousel = ({ jobs, onJobClick }) => {
         );
     }
 
-    const i0 = current % total;
-    const i1 = (current + 1) % total;
-    const i2 = (current + 2) % total;
-    const visibleJobs = [jobs[i0], jobs[i1], jobs[i2]];
+    // Build visible cards array
+    const visibleJobs = Array.from({ length: visibleCount + 1 }, (_, i) =>
+        jobs[(current + i) % total]
+    );
+
+    // Translate by one card width (including gap)
+    const cardWidthPercent = 100 / visibleCount;
+    const gapPx = 16;
 
     return (
-        <div>
+        <div
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
+        >
             <div className="overflow-hidden w-full">
                 <div
-                    className="flex gap-4"
+                    className="flex"
                     style={{
-                        transform: sliding ? "translateX(calc(-50% - 8px))" : "translateX(0)",
+                        gap: `${gapPx}px`,
+                        transform: sliding
+                            ? `translateX(calc(-${cardWidthPercent}% - ${gapPx / visibleCount}px))`
+                            : "translateX(0)",
                         transition: sliding
                             ? "transform 0.45s cubic-bezier(0.4, 0, 0.2, 1)"
                             : "none",
@@ -138,7 +181,7 @@ const JobsCarousel = ({ jobs, onJobClick }) => {
                         <div
                             key={`${job.id}-${i}`}
                             className="cursor-pointer shrink-0"
-                            style={{ width: "calc(50% - 8px)" }}
+                            style={{ width: `calc(${cardWidthPercent}% - ${gapPx * (visibleCount - 1) / visibleCount}px)` }}
                             onClick={onJobClick}
                         >
                             <Card jobs={job} />
@@ -147,7 +190,7 @@ const JobsCarousel = ({ jobs, onJobClick }) => {
                 </div>
             </div>
 
-            {total > 2 && (
+            {total > visibleCount && (
                 <div className="flex justify-center gap-1.5 mt-4">
                     {jobs.map((_, i) => (
                         <button
