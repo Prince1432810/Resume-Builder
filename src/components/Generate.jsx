@@ -8,7 +8,7 @@ const Generate = () => {
     return (
         <div className="w-full sm:w-72 shrink-0 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
             {/* Top accent band */}
-            <div className="bg-linear-to-br from-[#eaf4fb] to-[#d6eaf7] px-5 pt-5 pb-4 relative overflow-hidden">
+            <div className="bg-gradient-to-br from-[#eaf4fb] to-[#d6eaf7] px-5 pt-5 pb-4 relative overflow-hidden">
                 {/* Decorative circles */}
                 <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full bg-[#3985b6]/[0.07]" />
                 <div className="absolute right-5 top-4 w-10 h-10 rounded-full bg-[#3985b6]/5" />
